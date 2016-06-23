@@ -14,7 +14,6 @@
 
 #include <Eigen/Geometry> 
 
-#include <apriltags/AprilTagDetections.h>
 
 #include <cmath>
 
