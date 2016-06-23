@@ -131,8 +131,8 @@ include_directories(
 # add_dependencies(gimbal_track ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(gimbal_track_controller src/gimbal_track_controller.cpp)
-add_executable(gimbal_track_preprocessor src/gimbal_track_preprocessor.cpp)
+#add_executable(gimbal_track_controller src/gimbal_track_controller.cpp)
+#add_executable(gimbal_track_preprocessor src/gimbal_track_preprocessor.cpp)
 add_executable(gimbal_track_state_publisher src/gimbal_track_state_pub.cpp)
 add_executable(gimbal_track_velocity_controller src/gimbal_track_velocity_control.cpp)
 add_executable(gimbal_track_setpoint src/gimbal_track_setpoint.cpp)
@@ -142,13 +142,13 @@ add_executable(gimbal_track_setpoint src/gimbal_track_setpoint.cpp)
 # add_dependencies(gimbal_track_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(gimbal_track_controller
-  ${catkin_LIBRARIES}
-)
+#target_link_libraries(gimbal_track_controller
+#  ${catkin_LIBRARIES}
+#)
 
-target_link_libraries(gimbal_track_preprocessor
-  ${catkin_LIBRARIES}
-)
+# target_link_libraries(gimbal_track_preprocessor
+#   ${catkin_LIBRARIES}
+# )
 
 target_link_libraries(gimbal_track_state_publisher
   ${catkin_LIBRARIES}
