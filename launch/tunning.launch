@@ -1,0 +1,12 @@
+<launch>
+  <node name="gimbal_track_pitch_plot"
+        pkg="rqt_plot"
+        type="rqt_plot"
+        args="/teamhku/gimbal_track/gimbal_control_effort_pitch /teamhku/position_track/x_state /teamhku/position_track/setpoint_x"/>
+  <node name="gimbal_track_yaw_plot"
+        pkg="rqt_plot"
+        type="rqt_plot"
+        args="/teamhku/gimbal_track/gimbal_control_effort_yaw /teamhku/gimbal_track/setpoint_yaw  /teamhku/gimbal_track/yaw_state"/>
+  <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" />
+
+</launch>

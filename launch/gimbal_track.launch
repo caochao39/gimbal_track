@@ -5,7 +5,7 @@
       <node pkg="gimbal_track" type="gimbal_track_velocity_controller" name="gimbal_track_velocity_controller" output="screen">
     </node>
 
-    <node ns="gimbal_track" name="gimbal_track_pid_pitch_controller" pkg="pid" type="controller" output="screen" >
+    <node ns="gimbal_track" name="gimbal_track_pid_pitch_controller" pkg="pid" type="controller" >
       <param name="node_name" value="pitch_controller" />
       <param name="Kp" value="3.0" />
       <param name="Ki" value="0.3" />
@@ -22,7 +22,7 @@
       <param name="topic_from_controller" value="/teamhku/gimbal_track/gimbal_control_effort_pitch" />
      </node>
 
-    <node ns="gimbal_track" name="gimbal_track_yaw_controller" pkg="pid" type="controller" output="screen" >
+    <node ns="gimbal_track" name="gimbal_track_yaw_controller" pkg="pid" type="controller">
       <param name="node_name" value="yaw_controller" />
       <param name="Kp" value="3" />
       <param name="Ki" value="0.3" />
@@ -40,15 +40,9 @@
     
      </node>
 
-    <node name="gimbal_track_setpoint" pkg="gimbal_track" type="gimbal_track_setpoint" output="screen" />
-<!-- 
-   <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-      <rosparam command="delete" param="/diagnostic_aggregator" />
-      <rosparam command="load" file="$(find pid)/config/pid_diags.yaml" />
-   </node>
-
-    <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-    args="/teamhku/velocity_control_effort_x /teamhku/tag_x /teamhku/velocity_control_effort_y /teamhku/tag_y /setpoint/data" /> -->
+    <node name="gimbal_track_setpoint" pkg="gimbal_track" type="gimbal_track_setpoint" output="screen">
+      <param name="tag_detection_topic" value="/dji_sdk/class_36h11/tag_detections_pose" />
+    </node>
 
 
 </launch>

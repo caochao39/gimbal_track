@@ -28,7 +28,7 @@ double gimbal_control_effort_yaw;
 
 const double z_threshold = 0.001;
 
-bool gimbal_track_enabled = true;
+bool gimbal_track_enabled = false;
 
 void gimbalPitchControlEffortXCallback(std_msgs::Float64 gimbal_control_effort_pitch_msg)
 {

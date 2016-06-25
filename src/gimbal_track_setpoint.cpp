@@ -62,7 +62,7 @@ void gimbalOrientationCallback(const dji_sdk::Gimbal::ConstPtr& gimbal_ori_msg)
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "setpoint_node");
-  ROS_INFO("Starting setpoint publisher");
+  ROS_INFO("Starting gimbal track setpoint publisher");
   ros::NodeHandle nh;
 
   while (ros::Time(0) == ros::Time::now())
@@ -71,7 +71,9 @@ int main(int argc, char **argv)
     sleep(1);
   }
 
-  nh.param<std::string>("tag_detection_topic", tag_detection_topic, "/apriltags_ros/tag_detections_pose");
+  nh.param<std::string>("/gimbal_track_setpoint/tag_detection_topic", tag_detection_topic, "/apriltags_ros/tag_detections_pose");
+
+  ROS_INFO("Listening to apriltag detection topic: %s", tag_detection_topic.c_str());
 
   setpoint_yaw_pub = nh.advertise<std_msgs::Float64>("/teamhku/gimbal_track/setpoint_yaw", 1);
   setpoint_pitch_pub = nh.advertise<std_msgs::Float64>("/teamhku/gimbal_track/setpoint_pitch", 1);
@@ -79,11 +81,12 @@ int main(int argc, char **argv)
   apriltags_pos_sub = nh.subscribe(tag_detection_topic, 1000, apriltagsPositionCallback);
   gimbal_ori_sub = nh.subscribe("/dji_sdk/gimbal", 1000, gimbalOrientationCallback);
 
-  ros::Rate loop_rate(200);   // change setpoint every 5 seconds
+  ros::Rate loop_rate(200); 
 
   while (ros::ok())
   {
     ros::spinOnce();
+    ROS_DEBUG_ONCE("Publishing the setpoint data...");
     setpoint_yaw_pub.publish(setpoint_yaw);     
     setpoint_pitch_pub.publish(setpoint_pitch);
 
