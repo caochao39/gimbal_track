@@ -1,4 +1,9 @@
 <launch>
+
+    <node pkg="kalman_filter_ros" type="tag_detection_filter" name="tag_detection_filter" output="screen">
+      <param name="tag_detection_topic" value="/dji_sdk/class_36h11/tag_detections_pose" />
+    </node>
+
     <node pkg="gimbal_track" type="gimbal_track_state_publisher" name="gimbal_track_state_publisher" output="screen">
     </node>
 
@@ -12,7 +17,7 @@
       <param name="Kd" value="0.2" />
       <param name="upper_limit" value="180" />
       <param name="lower_limit" value="-180" />
-      <param name="windup_limit" value="10" />
+      <param name="windup_limit" value="5" />
       <param name="cutoff_frequency" value="20" />
       <param name="diagnostic_period" value="0.25" />
       <param name="max_loop_frequency" value="105.0" />
@@ -29,7 +34,7 @@
       <param name="Kd" value="0.2" />
       <param name="upper_limit" value="180" />
       <param name="lower_limit" value="-180" />
-      <param name="windup_limit" value="100" />
+      <param name="windup_limit" value="5" />
       <param name="cutoff_frequency" value="20" />
       <param name="diagnostic_period" value="0.25" />
       <param name="max_loop_frequency" value="105.0" />
@@ -41,8 +46,8 @@
      </node>
 
     <node name="gimbal_track_setpoint" pkg="gimbal_track" type="gimbal_track_setpoint" output="screen">
-      <param name="tag_detection_topic" value="/dji_sdk/class_36h11/tag_detections_pose" />
+      <!-- <param name="tag_detection_topic" value="/dji_sdk/class_36h11/tag_detections_pose" /> -->
+      <param name="tag_detection_topic" value="/apriltags/detections" />
     </node>
-
 
 </launch>

@@ -4,12 +4,16 @@
 #include <cmath>
 #include <geometry_msgs/PoseArray.h>
 #include <dji_sdk/Gimbal.h>
-
+#include <apriltags/AprilTagDetections.h>
 
 
 
 ros::Subscriber apriltags_pos_sub;
 ros::Subscriber gimbal_ori_sub;
+ros::Subscriber filtered_x_sub;
+ros::Subscriber filtered_y_sub;
+ros::Subscriber filtered_z_sub;
+
 
 ros::Publisher setpoint_yaw_pub;
 ros::Publisher setpoint_pitch_pub;
@@ -26,19 +30,28 @@ double tag_x;
 double tag_y;
 double tag_z;
 
+bool updated = false;
+bool apriltag_in_sight = false;
+
+
+const double z_threshold = 0.0001;
+
 std::string tag_detection_topic;
 
-void apriltagsPositionCallback(const geometry_msgs::PoseArray::ConstPtr& apriltag_pos_msg)
+
+
+void apriltagsPositionCallback(const apriltags::AprilTagDetections::ConstPtr& apriltag_pos_msg)
 {
-  if(std::begin(apriltag_pos_msg->poses) == std::end(apriltag_pos_msg->poses))
+  if(std::begin(apriltag_pos_msg->detections) == std::end(apriltag_pos_msg->detections))
   {
+    apriltag_in_sight = false;
     return;
   }
   else
   {
-    tag_x = apriltag_pos_msg->poses[0].position.x;
-    tag_y = -apriltag_pos_msg->poses[0].position.y;
-    tag_z = apriltag_pos_msg->poses[0].position.z;
+    tag_x = apriltag_pos_msg->detections[0].pose.position.x;
+    tag_y = -apriltag_pos_msg->detections[0].pose.position.y;
+    tag_z = apriltag_pos_msg->detections[0].pose.position.z;
 
     if(fabs(tag_z) < 0.0001)
     {
@@ -50,6 +63,36 @@ void apriltagsPositionCallback(const geometry_msgs::PoseArray::ConstPtr& aprilta
   setpoint_pitch.data = gimbal_pitch + atan(tag_y / tag_z) * 180 / M_PI;
 }
 
+
+
+
+
+
+
+
+// void apriltagsPositionCallback(const geometry_msgs::PoseArray::ConstPtr& apriltag_pos_msg)
+// {
+//   if(std::begin(apriltag_pos_msg->poses) == std::end(apriltag_pos_msg->poses))
+//   {
+//     apriltag_in_sight = false;
+//     return;
+//   }
+//   else
+//   {
+//     tag_x = apriltag_pos_msg->poses[0].position.x;
+//     tag_y = -apriltag_pos_msg->poses[0].position.y;
+//     tag_z = apriltag_pos_msg->poses[0].position.z;
+
+//     if(fabs(tag_z) < 0.0001)
+//     {
+//       return;
+//     }
+
+//   }
+//   setpoint_yaw.data = gimbal_yaw + atan(tag_x / tag_z) * 180 / M_PI;
+//   setpoint_pitch.data = gimbal_pitch + atan(tag_y / tag_z) * 180 / M_PI;
+// }
+
 void gimbalOrientationCallback(const dji_sdk::Gimbal::ConstPtr& gimbal_ori_msg)
 {
   gimbal_roll = gimbal_ori_msg->roll;
@@ -57,7 +100,38 @@ void gimbalOrientationCallback(const dji_sdk::Gimbal::ConstPtr& gimbal_ori_msg)
   gimbal_pitch = gimbal_ori_msg->pitch;
 }
 
+// void filteredXCallback(std_msgs::Float64 filtered_x_msg)
+// {
+//   if(updated)
+//   {
+//     if(fabs(tag_z) < z_threshold)
+//     {
+//       return;
+//     }
+//     tag_x = filtered_x_msg.data;
+//     setpoint_yaw.data = gimbal_yaw + atan(tag_x / tag_z) * 180 / M_PI;
+//   }
+  
+// }
 
+// void filteredZCallback(std_msgs::Float64 filtered_z_msg)
+// {
+//   tag_z = filtered_z_msg.data;
+//   updated = true;
+// }
+
+// void filteredYCallback(std_msgs::Float64 filtered_y_msg)
+// {
+//   if(updated)
+//   {
+//     if(fabs(tag_z) < z_threshold)
+//     {
+//       return;
+//     }
+//     tag_y = -filtered_y_msg.data;
+//     setpoint_pitch.data = gimbal_pitch + atan(tag_y / tag_z) * 180 / M_PI;
+//   }
+// }
 
 int main(int argc, char **argv)
 {
@@ -80,6 +154,9 @@ int main(int argc, char **argv)
 
   apriltags_pos_sub = nh.subscribe(tag_detection_topic, 1000, apriltagsPositionCallback);
   gimbal_ori_sub = nh.subscribe("/dji_sdk/gimbal", 1000, gimbalOrientationCallback);
+  // filtered_x_sub = nh.subscribe("/teamhku/filtered_data/tag_detection_x", 100, filteredXCallback);
+  // filtered_y_sub = nh.subscribe("/teamhku/filtered_data/tag_detection_y", 100, filteredYCallback);
+  // filtered_z_sub = nh.subscribe("/teamhku/filtered_data/tag_detection_z", 100, filteredZCallback);
 
   ros::Rate loop_rate(200); 
 
