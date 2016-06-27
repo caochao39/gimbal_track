@@ -1,8 +1,8 @@
 <launch>
 
-    <node pkg="kalman_filter_ros" type="tag_detection_filter" name="tag_detection_filter" output="screen">
+<!--     <node pkg="kalman_filter_ros" type="tag_detection_filter" name="tag_detection_filter" output="screen">
       <param name="tag_detection_topic" value="/dji_sdk/class_36h11/tag_detections_pose" />
-    </node>
+    </node> -->
 
     <node pkg="gimbal_track" type="gimbal_track_state_publisher" name="gimbal_track_state_publisher" output="screen">
     </node>
