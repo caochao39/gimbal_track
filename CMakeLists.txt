@@ -136,6 +136,7 @@ include_directories(
 add_executable(gimbal_track_state_publisher src/gimbal_track_state_pub.cpp)
 add_executable(gimbal_track_velocity_controller src/gimbal_track_velocity_control.cpp)
 add_executable(gimbal_track_setpoint src/gimbal_track_setpoint.cpp)
+add_executable(gimbal_track_angle_control src/gimbal_track_angle_control.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -160,6 +161,10 @@ target_link_libraries(gimbal_track_velocity_controller
 
 
 target_link_libraries(gimbal_track_setpoint
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(gimbal_track_angle_control
   ${catkin_LIBRARIES}
 )
 #############
