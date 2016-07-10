@@ -86,12 +86,6 @@ int main(int argc, char **argv)
   ROS_INFO("Starting gimbal angle control");
   ros::NodeHandle nh;
 
-  while (ros::Time(0) == ros::Time::now())
-  {
-    ROS_INFO("Setpoint_node spinning waiting for time to become non-zero");
-    sleep(1);
-  }
-
   nh.param<std::string>("/gimbal_track_setpoint/tag_detection_topic", tag_detection_topic, "/apriltags/36h11/detections");
 
   ROS_INFO("Listening to apriltag detection topic: %s", tag_detection_topic.c_str());

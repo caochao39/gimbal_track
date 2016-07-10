@@ -43,12 +43,6 @@ int main(int argc, char **argv)
 	ROS_INFO("Starting gimbal state publisher");
 	ros::NodeHandle nh;
 
-	while (ros::Time(0) == ros::Time::now())
-	{
-		ROS_INFO("Setpoint_node spinning waiting for time to become non-zero");
-		sleep(1);
-	}
-
 	gimbal_ori_sub = nh.subscribe("/dji_sdk/gimbal", 100, gimbalOrientationCallback);
 	yaw_state_pub = nh.advertise<std_msgs::Float64>("/teamhku/gimbal_track/yaw_state", 10);
 	pitch_state_pub = nh.advertise<std_msgs::Float64>("/teamhku/gimbal_track/pitch_state", 10);

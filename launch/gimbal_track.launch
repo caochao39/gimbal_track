@@ -4,17 +4,20 @@
       <param name="tag_detection_topic" value="/dji_sdk/class_36h11/tag_detections_pose" />
     </node> -->
 
-    <node pkg="gimbal_track" type="gimbal_track_state_publisher" name="gimbal_track_state_publisher" output="screen">
-    </node>
+<!--     <node pkg="gimbal_track" type="gimbal_track_state_publisher" name="gimbal_track_state_publisher" output="screen">
+    </node> -->
 
       <node pkg="gimbal_track" type="gimbal_track_velocity_controller" name="gimbal_track_velocity_controller" output="screen">
     </node>
 
-    <node ns="gimbal_track" name="gimbal_track_pid_pitch_controller" pkg="pid" type="controller" >
+    <node ns="gimbal_track" name="gimbal_track_pid_pitch_controller" pkg="pid" type="controller" output="screen">
       <param name="node_name" value="pitch_controller" />
-      <param name="Kp" value="3.0" />
-      <param name="Ki" value="0.3" />
-      <param name="Kd" value="0.2" />
+      <param name="Kp" value="6.5" />
+      <param name="Ki" value="0.1" />
+      <param name="Kd" value="80" />
+      <param name="P" value="1" />
+      <param name="Q" value="0.00001" />
+      <param name="R" value="0.1" />
       <param name="upper_limit" value="180" />
       <param name="lower_limit" value="-180" />
       <param name="windup_limit" value="5" />
@@ -27,11 +30,14 @@
       <param name="topic_from_controller" value="/teamhku/gimbal_track/gimbal_control_effort_pitch" />
      </node>
 
-    <node ns="gimbal_track" name="gimbal_track_yaw_controller" pkg="pid" type="controller">
+    <node ns="gimbal_track" name="gimbal_track_pid_yaw_controller" pkg="pid" type="controller">
       <param name="node_name" value="yaw_controller" />
-      <param name="Kp" value="3" />
-      <param name="Ki" value="0.3" />
-      <param name="Kd" value="0.2" />
+      <param name="Kp" value="6.5" />
+      <param name="Ki" value="0.1" />
+      <param name="Kd" value="80" />
+      <param name="P" value="1" />
+      <param name="Q" value="0.00001" />
+      <param name="R" value="0.1" />
       <param name="upper_limit" value="180" />
       <param name="lower_limit" value="-180" />
       <param name="windup_limit" value="5" />
@@ -47,7 +53,7 @@
 
     <node name="gimbal_track_setpoint" pkg="gimbal_track" type="gimbal_track_setpoint" output="screen">
       <!-- <param name="tag_detection_topic" value="/dji_sdk/class_36h11/tag_detections_pose" /> -->
-      <param name="tag_detection_topic" value="/apriltags/36h11/detections" />
+      <param name="tag_detection_topic" value="/apriltags_ros/class_36h11/tag_detections_pose" />
     </node>
 
 </launch>
